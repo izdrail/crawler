@@ -3,25 +3,25 @@
 namespace UnixDevil\CrawlerBoat\Tests;
 
 
-use UnixDevil\CrawlerBoat\CrawlerBoatProvider;
-use UnixDevil\NewsBoat\NewsBoatServiceProvider;
-use PHPUnit\Framework\TestCase as BaseTestCase;
-class TestCase extends BaseTestCase
+use UnixDevil\CrawlerBoat\Providers\CrawlerBoatProvider;
+
+class TestCase extends \Orchestra\Testbench\TestCase
 {
     public function setUp(): void
     {
         parent::setUp();
-        // additional setup
+
     }
 
-    final protected function getPackageProviders($app)
+    final protected function getPackageProviders($app):array
     {
+        $app->register(CrawlerBoatProvider::class);
         return [
-            CrawlerBoatProvider::class,
+            CrawlerBoatProvider::class
         ];
     }
 
-    protected function getEnvironmentSetUp($app)
+    protected function getEnvironmentSetUp($app): void
     {
         // perform environment setup
     }

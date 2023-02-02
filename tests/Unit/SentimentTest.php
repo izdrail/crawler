@@ -4,17 +4,16 @@ namespace UnixDevil\CrawlerBoat\Tests\Unit;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
-use PHPUnit\Framework\TestCase;
 use Mockery;
 
 use UnixDevil\Crawler\Contracts\SentimentContract;
 use UnixDevil\CrawlerBoat\Client\SentimentClient;
 use UnixDevil\CrawlerBoat\DTO\SentimentDTO;
-use UnixDevil\CrawlerBoat\Implementation\CrawlerConfigImplementation;
+use UnixDevil\CrawlerBoat\Interfaces\CrawlerConfigInterface;
 use UnixDevil\NewsBoat\Client\NewsBoat;
 use UnixDevil\NewsBoat\Interfaces\AllNewsInterface;
 use UnixDevil\NewsBoat\Interfaces\NewsConfigInterface;
-class SentimentTest extends TestCase
+class SentimentTest extends \UnixDevil\CrawlerBoat\Tests\TestCase
 {
 
     /**
@@ -29,7 +28,7 @@ class SentimentTest extends TestCase
 
         //generate a test for the sentiment client
         $mock = $this->getMockBuilder(SentimentClient::class)
-            ->setConstructorArgs([Mockery::mock(ClientInterface::class), Mockery::mock(CrawlerConfigImplementation::class)])
+            ->setConstructorArgs([Mockery::mock(ClientInterface::class), Mockery::mock(CrawlerConfigInterface::class)])
             ->getMock();
         $mock->method('getSentiment')
             ->with('https://v1.nlpapi.org')
