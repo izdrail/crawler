@@ -2,6 +2,8 @@
 
 use GuzzleHttp\ClientInterface;
 use Illuminate\Console\Command;
+use UnixDevil\CrawlerBoat\DTO\HtmlDTO;
+use UnixDevil\CrawlerBoat\Interfaces\HtmlClientContract;
 use UnixDevil\CrawlerBoat\Interfaces\SentimentInterface;
 
 
@@ -27,9 +29,32 @@ class HtmlExtractorCommand extends Command
      * @param ClientInterface $client
      * @return void
      */
-    final public function handle(ClientInterface $client): void
+    final public function handle(ClientInterface $client, HtmlClientContract $htmlClientContract): void
     {
-        $this->output->success('Welcome!');
+        $this->output->success('Welcome to the package crawler command!');
+
+        $links = [
+            'it' => 'https://www.cv-library.co.uk/it-jobs?perpage=100',
+        ];
+
+        $object = [
+            'base_url' => 'https://www.cv-library.co.uk',
+            "links" => $links,
+            "iterator" => "h2.job__title > a",
+            "fields"=> [
+                "title" => "h1.job__title > span",
+                "body" => "div.job__description",
+                "url" => "",
+                "category" => "",
+                "image" => "img.job__logo",
+            ],
+        ];
+
+
+        $htmlStructure = HtmlDTO::from($object);
+
+        $data = $htmlClientContract->extract($htmlStructure);
+        dd($data);
     }
 
 

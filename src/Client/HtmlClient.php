@@ -4,6 +4,9 @@ namespace UnixDevil\CrawlerBoat\Client;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
+use Symfony\Component\Console\Output\Output;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DomCrawler\Crawler;
 use UnixDevil\CrawlerBoat\DTO\HtmlDTO;
 use UnixDevil\CrawlerBoat\Interfaces\HtmlClientContract;
@@ -11,8 +14,7 @@ use UnixDevil\CrawlerBoat\Interfaces\HtmlClientContract;
 class HtmlClient implements HtmlClientContract
 {
     private ClientInterface $client;
-    private HtmlDTO $dto;
-
+    private ConsoleOutputInterface $output;
     public const HEADERS = [
         'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
         'Accept' => 'text/html,application/xhtml',
@@ -24,28 +26,33 @@ class HtmlClient implements HtmlClientContract
         'TE' => 'Trailers',
     ];
 
-    public function __construct(ClientInterface $client, HTMLDTO $htmlDTO)
+    public function __construct(ClientInterface $client, ConsoleOutputInterface $output)
     {
         $this->client = $client;
-        $this->dto = $htmlDTO;
+        $this->output = $output;
     }
 
     /**
      * @throws GuzzleException
      * @throws \Exception
      */
-    public function extract(): array
+    public function extract(HTMLDTO $dto): array
     {
         $results = [];
-        $links = $this->dto->links;
+
+        $links = $dto->links;
 
         foreach ($links as $category => $link) {
+
+            $this->output->write($link);
+
             $content = $this->client->request('GET', $link, [
                 'headers' => self::HEADERS,
             ]);
+
             if ($content->getStatusCode() ===200) {
                 $body = $content->getBody()->getContents();
-                $results[] = $this->processBody($body, $category);
+                $results[] = $this->processBody($dto, $body, $category);
             }
             if ($content->getStatusCode() === 403) {
                 throw new \Exception("403 Forbidden");
@@ -63,39 +70,63 @@ class HtmlClient implements HtmlClientContract
     }
 
 
-    private function processBody(string $body, string $category): array
+    private function processBody(HtmlDTO $dto, string $body, string $category): array
     {
         $results = [];
         $crawler = new Crawler($body);
-        $crawler->filter($this->dto->iterator)->each(/**
-         * @throws Exception
-         */ function (Crawler $node, $i) use ($category, $results) {
-            $this->dto->fields["category"] = $category;
-            if (str_contains($node->attr('href'), $this->dto->base_url)) {
-                $results[] = $this->processSingle($node->attr('href'), $this->dto);
+        $crawler->filter($dto->iterator)->each(/**
+         */ function (Crawler $node, $i) use ($category, $results, $dto) {
+            $dto->fields["category"] = $category;
+            if (str_contains($node->attr('href'), $dto->base_url)) {
+                $results[] = $this->processSingle($node->attr('href'), $dto);
             }
-            $results[] = $this->processSingle($this->dto->base_url . $node->attr('href'), $this->dto);
+            $results[] = $this->processSingle($dto->base_url . $node->attr('href'), $dto);
         });
         return $results;
     }
 
-    private function processSingle(string $url, HtmlDTO $dto): HtmlDTO
+    private function processSingle(string $url, HtmlDTO $dto): array
     {
-        $dto->fields["url"] = trim(str_replace(PHP_EOL, '', $url));
-        $content = $this->client->get($this->dto->fields["url"]);
-        $body = $content->getBody()->getContents();
-        $crawler = new Crawler($body);
-        foreach ($this->dto->fields as $field => $value) {
-            if ($field === "url") {
-                continue;
+        $results = [];
+        $this->output->write($url);
+        $content = $this->client->request('GET', $url, [
+            'headers' => self::HEADERS,
+        ]);
+
+        if ($content->getStatusCode() === 200) {
+            $body = $content->getBody()->getContents();
+            $crawler = new Crawler($body);
+
+            foreach ($dto->fields as $key => $value) {
+
+                $this->output->write($key);
+
+                if($key ==="url"){
+                    continue;
+                }
+
+                if($key ==="category"){
+                    continue;
+                }
+
+                if($key !== ""){
+                    $results[$key] = $crawler->filter($value)->text();
+                }
             }
-            if ($field === "category") {
-                continue;
-            }
-            $crawler->filter($this->dto->fields[$field])->each(function (Crawler $node, $i) use ($field) {
-                $this->dto->fields[$field] = $node->text();
-            });
+            $this->output->write($results);
+            return $results;
         }
-        return $this->dto;
+        if ($content->getStatusCode() === 403) {
+            throw new \Exception("403 Forbidden");
+        }
+
+        if ($content->getStatusCode() === 404) {
+            throw new \Exception("404 Not Found");
+        }
+
+        if ($content->getStatusCode() === 500) {
+            throw new \Exception("500 Internal Server Error");
+        }
+        return $results;
     }
 }
