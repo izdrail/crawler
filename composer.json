@@ -25,7 +25,11 @@
         "php": "^8.1",
         "guzzlehttp/guzzle": ">=7.5.0",
         "illuminate/support": ">=9.0.0",
-        "spatie/laravel-data": ">=3.0.0"
+        "illuminate/console": ">=v9.0.0",
+        "spatie/laravel-data": ">=3.0.0",
+        "symfony/css-selector": "^6.2",
+        "symfony/browser-kit": "^6.2",
+        "symfony/dom-crawler": "^6.2"
     },
     "require-dev": {
         "mockery/mockery": "^1.5",

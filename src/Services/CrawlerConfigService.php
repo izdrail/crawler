@@ -11,7 +11,6 @@ class CrawlerConfigService implements CrawlerConfigInterface
 
     public  function __construct(array $config)
     {
-        //assign config by
         $this->config = $config;
     }
 
