@@ -1,12 +1,11 @@
 <?php
 
-namespace UnixDevil\CrawlerBoat\Implementation;
+namespace UnixDevil\CrawlerBoat\Services;
 
 use UnixDevil\CrawlerBoat\Interfaces\CrawlerConfigInterface;
 
-class CrawlerConfigImplementation implements CrawlerConfigInterface
+class CrawlerConfigService implements CrawlerConfigInterface
 {
-
 
     private array $config;
 
