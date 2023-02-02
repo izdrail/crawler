@@ -25,6 +25,19 @@ class SentimentTest extends \UnixDevil\CrawlerBoat\Tests\TestCase
 
         $sentiment= $this->getMockBuilder(SentimentDTO::class)
             ->getMock();
+        $sentiment
+            ->with([
+                "title" => "test",
+                "date" => "test",
+                "text" => "test",
+                "html" => "test",
+                "summary" => "test",
+                "authors" => [],
+                "keywords" => [],
+                "images" => [],
+                "entities" => [],
+                "sentiment" => []
+            ]);
 
         //generate a test for the sentiment client
         $mock = $this->getMockBuilder(SentimentClient::class)

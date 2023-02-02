@@ -20,12 +20,17 @@ use UnixDevil\NewsBoat\Interfaces\NewsConfigInterface;
 class HtmlTest extends \UnixDevil\CrawlerBoat\Tests\TestCase
 {
 
+    /**
+     * @throws GuzzleException
+     */
     public function testHtmlClient()
     {
         //generate a unit test for the HtmlClient
 
         $sentiment= $this->getMockBuilder(HtmlDTO::class)
             ->getMock();
+
+
 
         //generate a test for the sentiment client
         $mock = $this->getMockBuilder(HtmlClient::class)
