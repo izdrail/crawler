@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace Cornatul\Crawler\Dto;
 
 use Spatie\LaravelData\Data;

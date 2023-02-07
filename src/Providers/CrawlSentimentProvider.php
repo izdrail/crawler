@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace Cornatul\Crawler\Providers;
 
 use Cornatul\Crawler\Client\CrawlerClient;
@@ -21,8 +21,6 @@ class CrawlSentimentProvider extends ServiceProvider
 
     final public function register(): void
     {
-        $this->app->bind(ClientInterface::class, Client::class);
-        $this->app->bind(ConsoleOutputInterface::class, ConsoleOutput::class);
         $this->app->bind(SentimentInterface::class, SentimentClient::class);
     }
 

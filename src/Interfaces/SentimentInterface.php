@@ -1,8 +1,5 @@
 <?php
-/**
- * @author UnixDevil
- * @website https://unixdevil.com
- */
+declare(strict_types=1);
 namespace Cornatul\Crawler\Interfaces;
 
 use Cornatul\Crawler\Dto\SentimentDto;

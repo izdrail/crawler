@@ -1,15 +1,16 @@
 <?php
-
+declare(strict_types=1);
 namespace Cornatul\Crawler\Helpers;
 use Illuminate\Support\Facades\Config;
 
+
 /**
- * @todo Move this to a helper and not an facade
+ * Class CrawlerConfig
  */
 class CrawlerConfig
 {
     public static function getSentimentEndpoint(): string
     {
-        return Config::get('crawler.sentiment-endpoint');
+        return config('crawler.sentiment-endpoint');
     }
 }

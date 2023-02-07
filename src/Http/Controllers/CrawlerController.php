@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace Cornatul\Crawler\Http\Controllers;
 
 use Illuminate\Contracts\Foundation\Application;

@@ -1,4 +1,6 @@
-<?php namespace Cornatul\Crawler\Commands;
+<?php
+declare(strict_types=1);
+namespace Cornatul\Crawler\Commands;
 
 use GuzzleHttp\ClientInterface;
 use Illuminate\Console\Command;

@@ -1,11 +1,12 @@
 <?php
-
+declare(strict_types=1);
 namespace Cornatul\Crawler\Client;
 
 use Cornatul\Crawler\Interfaces\CrawlerInterface;
 use Exception;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Collection;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,7 +25,7 @@ class CrawlerClient implements CrawlerInterface
         "category",
     ];
 
-    public const HEADERS = [
+    private array $headers = [
         'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
         'Accept' => 'text/html,application/xhtml',
         'Accept-Language' => 'en-US,en;q=0.9',
@@ -55,7 +56,7 @@ class CrawlerClient implements CrawlerInterface
             $this->output->write($link);
 
             $content = $this->client->request('GET', $link, [
-                'headers' => self::HEADERS,
+                'headers' => $this->headers,
             ]);
 
             if ($content->getStatusCode() ===200) {
@@ -86,7 +87,7 @@ class CrawlerClient implements CrawlerInterface
      * @throws GuzzleException
      * @todo replace the return with a collection from laravel
      */
-    private function processBody(HtmlDto $dto, string $body, string $category): array
+    private function processBody(HtmlDto $dto, string $body, string $category): Collection
     {
         $results = [];
         $crawler = new Crawler($body);
@@ -104,23 +105,28 @@ class CrawlerClient implements CrawlerInterface
     /**
      * @throws GuzzleException
      * @throws Exception
+     * @todo replace the return with a collection from laravel
      */
     private function processSingle(string $url, HtmlDto $dto): array
     {
         $results = [];
+
         $this->output->write($url);
+
         $content = $this->client->request('GET', $url, [
-            'headers' => self::HEADERS,
+            'headers' => $this->headers,
         ]);
 
         if ($content->getStatusCode() === 200) {
+
             $body = $content->getBody()->getContents();
+
             $crawler = new Crawler($body);
 
             foreach ($dto->fields as $key => $value)
             {
                 $this->output->write($key);
-
+                //todo insert a test for this & merge this with the other part of the code
                 if(in_array($key, $this->keyDenied, true)){
                     continue;
                 }
@@ -130,6 +136,7 @@ class CrawlerClient implements CrawlerInterface
                     $results[$key] = $crawler->filter($value)->text();
                 }
             }
+
             $this->output->write($results);
 
             return $results;

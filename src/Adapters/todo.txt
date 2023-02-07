@@ -1,0 +1,3 @@
+We need a list of adapters that will implement a interface
+We need an adapter manager that will consume the adapter and based upon the type of it will use a function to dinamically create it and return it to the caller
+
