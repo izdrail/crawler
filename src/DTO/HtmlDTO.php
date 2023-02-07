@@ -1,6 +1,6 @@
 <?php
 
-namespace UnixDevil\CrawlerBoat\DTO;
+namespace Cornatul\CrawlerBoat\DTO;
 
 use Spatie\LaravelData\Data;
 

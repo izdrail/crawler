@@ -4,6 +4,7 @@ namespace UnixDevil\CrawlerBoat\Tests\Unit;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
+use JsonException;
 use Mockery;
 
 use UnixDevil\Crawler\Contracts\SentimentContract;
@@ -17,31 +18,22 @@ class SentimentTest extends \UnixDevil\CrawlerBoat\Tests\TestCase
 {
 
     /**
-     * @throws \JsonException
-     * @throws GuzzleException
+     * @throws JsonException|GuzzleException
      */
-    public function testGetSentiment()
+    final public function testGetSentiment():void
     {
 
         $sentiment= $this->getMockBuilder(SentimentDTO::class)
             ->getMock();
-        $sentiment
-            ->with([
-                "title" => "test",
-                "date" => "test",
-                "text" => "test",
-                "html" => "test",
-                "summary" => "test",
-                "authors" => [],
-                "keywords" => [],
-                "images" => [],
-                "entities" => [],
-                "sentiment" => []
-            ]);
 
-        //generate a test for the sentiment client
         $mock = $this->getMockBuilder(SentimentClient::class)
-            ->setConstructorArgs([Mockery::mock(ClientInterface::class), Mockery::mock(CrawlerConfigInterface::class)])
+            ->setConstructorArgs
+            (
+                [
+                Mockery::mock(ClientInterface::class),
+                Mockery::mock(ConsoleOutputInterface::class)
+                ]
+            )
             ->getMock();
         $mock->method('getSentiment')
             ->with('https://v1.nlpapi.org')

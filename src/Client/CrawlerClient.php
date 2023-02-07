@@ -1,6 +1,6 @@
 <?php
 
-namespace UnixDevil\CrawlerBoat\Client;
+namespace Cornatul\CrawlerBoat\Client;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
@@ -8,13 +8,15 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DomCrawler\Crawler;
-use UnixDevil\CrawlerBoat\DTO\HtmlDTO;
-use UnixDevil\CrawlerBoat\Interfaces\HtmlClientContract;
+use Cornatul\CrawlerBoat\DTO\HtmlDTO;
+use Cornatul\CrawlerBoat\Interfaces\HtmlClientContract;
 
-class HtmlClient implements HtmlClientContract
+class CrawlerClient implements HtmlClientContract
 {
     private ClientInterface $client;
+
     private ConsoleOutputInterface $output;
+
     public const HEADERS = [
         'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
         'Accept' => 'text/html,application/xhtml',

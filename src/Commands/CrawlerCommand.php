@@ -1,13 +1,12 @@
-<?php namespace UnixDevil\CrawlerBoat\Commands;
+<?php namespace Cornatul\CrawlerBoat\Commands;
 
 use GuzzleHttp\ClientInterface;
 use Illuminate\Console\Command;
-use UnixDevil\CrawlerBoat\DTO\HtmlDTO;
-use UnixDevil\CrawlerBoat\Interfaces\HtmlClientContract;
-use UnixDevil\CrawlerBoat\Interfaces\SentimentInterface;
+use Cornatul\CrawlerBoat\DTO\HtmlDTO;
+use Cornatul\CrawlerBoat\Interfaces\SentimentInterface;
 
 
-class HtmlExtractorCommand extends Command
+class CrawlerCommand extends Command
 {
     /**
      * @var string The console command name.
@@ -22,7 +21,7 @@ class HtmlExtractorCommand extends Command
     /**
      * @var string The console command description.
      */
-    protected $description = 'This will extract content from a html page using a json structure';
+    protected $description = 'This will extract content from a website page using a array structure';
 
     /**
      * Execute the console command.

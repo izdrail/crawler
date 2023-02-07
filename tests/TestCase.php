@@ -1,9 +1,9 @@
 <?php
 
-namespace UnixDevil\CrawlerBoat\Tests;
+namespace Cornatul\CrawlerBoat\Tests;
 
 
-use UnixDevil\CrawlerBoat\Providers\CrawlerBoatProvider;
+use Cornatul\CrawlerBoat\Providers\CrawlerBoatProvider;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {

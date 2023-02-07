@@ -12,3 +12,47 @@ This package is a great tool for businesses, marketers, and researchers who need
 The user-friendly interface, fast performance, and reliable results make it an essential tool for anyone who needs to process large amounts of information quickly and accurately.
 
 With the Laravel Crawl and Sentiment Analysis Package, you'll be able to extract valuable insights from any link in no time.
+
+## Installation
+
+You can install the package via composer:
+
+```bash
+composer require unixdevil/crawlerboat
+```
+
+## Usage SentimentInterface -  Laravel 9+
+
+```php
+
+```
+
+## Usage HtmlClientContract -  Laravel 9+
+
+You can use the interface in your own classes by type-hinting against the interface: HtmlClientContract
+
+
+```php
+
+        $links = [
+            'it' => 'https://www.cv-library.co.uk/it-jobs?perpage=100',
+        ];
+
+        $object = [
+            'base_url' => 'https://www.cv-library.co.uk',
+            "links" => $links, //array of links
+            "iterator" => "h2.job__title > a", // css selector of a list of links to crawl
+            "fields"=> [
+                "title" => "h1.job__title > span",
+                "body" => "div.job__description",
+                "url" => "",
+                "category" => "",
+                "image" => "img.job__logo",
+            ],
+        ];
+
+
+        $htmlStructure = HtmlDTO::from($object);
+
+        $data = $htmlClientContract->extract($htmlStructure);
+```

@@ -1,6 +1,6 @@
 <?php
 
-namespace UnixDevil\CrawlerBoat\DTO;
+namespace Cornatul\CrawlerBoat\DTO;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;

@@ -1,13 +1,13 @@
 <?php
 
-namespace UnixDevil\CrawlerBoat\Interfaces;
+namespace Cornatul\CrawlerBoat\Interfaces;
 
-use UnixDevil\CrawlerBoat\DTO\HtmlDTO;
+use Cornatul\CrawlerBoat\DTO\HtmlDTO;
 
 /**
  * Interface HtmlClientContract
  */
-interface HtmlClientContract
+interface CrawlerInterface
 {
     /**
      * Provides a way to extract data
