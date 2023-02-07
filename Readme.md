@@ -1,6 +1,5 @@
 # Crawler Boat
 
-
 This package is designed to provide a simple and efficient solution for Laravel users who want to extract full text and sentiment analysis from a provided link.
 The package is built using the Laravel PHP framework and utilizes [V1.NLPAPI.ORG](https://v1.nlpapi.org/docs) the latest advancements in natural language processing to deliver accurate results.
 
@@ -18,13 +17,13 @@ With the Laravel Crawl and Sentiment Analysis Package, you'll be able to extract
 You can install the package via composer:
 
 ```bash
-composer require unixdevil/crawlerboat
+composer require cornatul/crawlerboat
 ```
 
 ## Usage SentimentInterface -  Laravel 9+
 
 ```php
-
+@todo implement this
 ```
 
 ## Usage HtmlClientContract -  Laravel 9+
@@ -56,3 +55,9 @@ You can use the interface in your own classes by type-hinting against the interf
 
         $data = $htmlClientContract->extract($htmlStructure);
 ```
+The interface is used in the package to extract data from a given link.
+
+The iterator is used to extract a list of links from the given link.
+
+The fields are used to extract the data from the list of links.
+

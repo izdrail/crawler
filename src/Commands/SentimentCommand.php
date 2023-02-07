@@ -1,10 +1,10 @@
-<?php namespace Cornatul\CrawlerBoat\Commands;
+<?php namespace Cornatul\Crawler\Commands;
 
 use GuzzleHttp\ClientInterface;
 use Illuminate\Console\Command;
-use UnixDevil\CrawlerBoat\DTO\HtmlDTO;
-use Cornatul\CrawlerBoat\Interfaces\HtmlClientContract;
-use Cornatul\CrawlerBoat\Interfaces\SentimentInterface;
+use Cornatul\Crawler\Dto\HtmlDto;
+use Cornatul\Crawler\Interfaces\SentimentInterface;
+use JsonException;
 
 
 class SentimentCommand extends Command
@@ -22,12 +22,14 @@ class SentimentCommand extends Command
     /**
      * @var string The console command description.
      */
-    protected $description = 'This will extract the sentiment from a url';
+    protected $description = 'This will extract the whole text and sentiment of that text from a  given url';
 
     /**
      * Execute the console command.
      * @param ClientInterface $client
+     * @param SentimentInterface $sentiment
      * @return void
+     * @throws JsonException
      */
     final public function handle(ClientInterface $client, SentimentInterface $sentiment): void
     {
@@ -35,9 +37,9 @@ class SentimentCommand extends Command
 
         $url = $this->argument('url');
 
-        $sentiment = $sentiment->getSentiment($url);
+        $result = $sentiment->getSentiment($url);
 
-        dd($sentiment);
+        $this->output->success(json_encode($result, JSON_THROW_ON_ERROR));
     }
 
 

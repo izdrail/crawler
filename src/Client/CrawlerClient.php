@@ -1,21 +1,28 @@
 <?php
 
-namespace Cornatul\CrawlerBoat\Client;
+namespace Cornatul\Crawler\Client;
 
+use Cornatul\Crawler\Interfaces\CrawlerInterface;
+use Exception;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DomCrawler\Crawler;
-use Cornatul\CrawlerBoat\DTO\HtmlDTO;
-use Cornatul\CrawlerBoat\Interfaces\HtmlClientContract;
+use Cornatul\Crawler\Dto\HtmlDto;
 
-class CrawlerClient implements HtmlClientContract
+
+class CrawlerClient implements CrawlerInterface
 {
     private ClientInterface $client;
 
     private ConsoleOutputInterface $output;
+
+    private array $keyDenied = [
+        "url",
+        "category",
+    ];
 
     public const HEADERS = [
         'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
@@ -25,7 +32,6 @@ class CrawlerClient implements HtmlClientContract
         'Connection' => 'keep-alive',
         'Upgrade-Insecure-Requests' => '1',
         'Cache-Control' => 'max-age=0',
-        'TE' => 'Trailers',
     ];
 
     public function __construct(ClientInterface $client, ConsoleOutputInterface $output)
@@ -36,9 +42,9 @@ class CrawlerClient implements HtmlClientContract
 
     /**
      * @throws GuzzleException
-     * @throws \Exception
+     * @throws Exception
      */
-    public function extract(HTMLDTO $dto): array
+    public function extract(HtmlDto $dto): array
     {
         $results = [];
 
@@ -57,29 +63,37 @@ class CrawlerClient implements HtmlClientContract
                 $results[] = $this->processBody($dto, $body, $category);
             }
             if ($content->getStatusCode() === 403) {
-                throw new \Exception("403 Forbidden");
+                throw new \RuntimeException("403 Forbidden");
             }
 
             if ($content->getStatusCode() === 404) {
-                throw new \Exception("404 Not Found");
+                throw new \RuntimeException("404 Not Found");
             }
 
             if ($content->getStatusCode() === 500) {
-                throw new \Exception("500 Internal Server Error");
+                throw new \RuntimeException("500 Internal Server Error");
             }
         }
         return $results;
     }
 
 
-    private function processBody(HtmlDTO $dto, string $body, string $category): array
+    /**
+     * @param HtmlDto $dto
+     * @param string $body
+     * @param string $category
+     * @return array
+     * @throws GuzzleException
+     * @todo replace the return with a collection from laravel
+     */
+    private function processBody(HtmlDto $dto, string $body, string $category): array
     {
         $results = [];
         $crawler = new Crawler($body);
-        $crawler->filter($dto->iterator)->each(/**
-         */ function (Crawler $node, $i) use ($category, $results, $dto) {
+        $crawler->filter($dto->iterator)->each( function (Crawler $node, $i) use ($category, $results, $dto) {
             $dto->fields["category"] = $category;
-            if (str_contains($node->attr('href'), $dto->base_url)) {
+            if (str_contains($node->attr('href'), $dto->base_url))
+            {
                 $results[] = $this->processSingle($node->attr('href'), $dto);
             }
             $results[] = $this->processSingle($dto->base_url . $node->attr('href'), $dto);
@@ -87,7 +101,11 @@ class CrawlerClient implements HtmlClientContract
         return $results;
     }
 
-    private function processSingle(string $url, HtmlDTO $dto): array
+    /**
+     * @throws GuzzleException
+     * @throws Exception
+     */
+    private function processSingle(string $url, HtmlDto $dto): array
     {
         $results = [];
         $this->output->write($url);
@@ -99,35 +117,34 @@ class CrawlerClient implements HtmlClientContract
             $body = $content->getBody()->getContents();
             $crawler = new Crawler($body);
 
-            foreach ($dto->fields as $key => $value) {
-
+            foreach ($dto->fields as $key => $value)
+            {
                 $this->output->write($key);
 
-                if($key ==="url"){
+                if(in_array($key, $this->keyDenied, true)){
                     continue;
                 }
 
-                if($key ==="category"){
-                    continue;
-                }
-
-                if($key !== ""){
+                if($key !== "")
+                {
                     $results[$key] = $crawler->filter($value)->text();
                 }
             }
             $this->output->write($results);
+
             return $results;
+
         }
         if ($content->getStatusCode() === 403) {
-            throw new \Exception("403 Forbidden");
+            throw new \RuntimeException("403 Forbidden");
         }
 
         if ($content->getStatusCode() === 404) {
-            throw new \Exception("404 Not Found");
+            throw new \RuntimeException("404 Not Found");
         }
 
         if ($content->getStatusCode() === 500) {
-            throw new \Exception("500 Internal Server Error");
+            throw new \RuntimeException("500 Internal Server Error");
         }
         return $results;
     }

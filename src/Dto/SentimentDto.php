@@ -1,6 +1,6 @@
 <?php
 
-namespace Cornatul\CrawlerBoat\DTO;
+namespace Cornatul\Crawler\Dto;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -9,11 +9,11 @@ use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Normalizers\ModelNormalizer;
 
 /**
- * @package UnixDevel\Crawler
+ * @package Cornatul\Crawler
  * @class NlpDTO
  *
  */
-class SentimentDTO extends Data
+class SentimentDto extends Data
 {
     public string $title;
     public ?string $date;

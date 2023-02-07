@@ -7,13 +7,10 @@ use GuzzleHttp\Exception\GuzzleException;
 use JsonException;
 use Mockery;
 
-use Cornatul\Crawler\Contracts\SentimentContract;
-use Cornatul\CrawlerBoat\Client\SentimentClient;
-use Cornatul\CrawlerBoat\DTO\SentimentDTO;
-use Cornatul\CrawlerBoat\Interfaces\CrawlerConfigInterface;
-use Cornatul\NewsBoat\Client\NewsBoat;
-use Cornatul\NewsBoat\Interfaces\AllNewsInterface;
-use Cornatul\NewsBoat\Interfaces\NewsConfigInterface;
+use Cornatul\Crawler\Interfaces\SentimentInterface;
+use Cornatul\Crawler\Client\SentimentClient;
+use Cornatul\Crawler\Dto\SentimentDto;
+
 class SentimentTest extends \Cornatul\CrawlerBoat\Tests\TestCase
 {
 
@@ -23,7 +20,7 @@ class SentimentTest extends \Cornatul\CrawlerBoat\Tests\TestCase
     final public function testGetSentiment():void
     {
 
-        $sentiment= $this->getMockBuilder(SentimentDTO::class)
+        $sentiment= $this->getMockBuilder(SentimentDto::class)
             ->getMock();
 
         $mock = $this->getMockBuilder(SentimentClient::class)

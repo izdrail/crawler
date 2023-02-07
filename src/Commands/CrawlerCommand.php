@@ -1,9 +1,9 @@
-<?php namespace Cornatul\CrawlerBoat\Commands;
+<?php namespace Cornatul\Crawler\Commands;
 
 use GuzzleHttp\ClientInterface;
 use Illuminate\Console\Command;
-use Cornatul\CrawlerBoat\DTO\HtmlDTO;
-use Cornatul\CrawlerBoat\Interfaces\SentimentInterface;
+use Cornatul\Crawler\Dto\HtmlDto;
+use Cornatul\Crawler\Interfaces\SentimentInterface;
 
 
 class CrawlerCommand extends Command
@@ -36,6 +36,7 @@ class CrawlerCommand extends Command
             'it' => 'https://www.cv-library.co.uk/it-jobs?perpage=100',
         ];
 
+        //todo to change this have a look at how you can preprocess the data that enters in the DTO
         $object = [
             'base_url' => 'https://www.cv-library.co.uk',
             "links" => $links,
@@ -43,17 +44,16 @@ class CrawlerCommand extends Command
             "fields"=> [
                 "title" => "h1.job__title > span",
                 "body" => "div.job__description",
-                "url" => "",
-                "category" => "",
                 "image" => "img.job__logo",
             ],
         ];
 
 
-        $htmlStructure = HtmlDTO::from($object);
+        $htmlStructure = HtmlDto::from($object);
 
         $data = $htmlClientContract->extract($htmlStructure);
-        dd($data);
+
+        $this->output->success($data);
     }
 
 

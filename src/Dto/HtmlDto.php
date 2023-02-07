@@ -1,10 +1,10 @@
 <?php
 
-namespace Cornatul\CrawlerBoat\DTO;
+namespace Cornatul\Crawler\Dto;
 
 use Spatie\LaravelData\Data;
 
-class HtmlDTO extends Data
+class HtmlDto extends Data
 {
     public string $base_url;
 
@@ -12,6 +12,7 @@ class HtmlDTO extends Data
 
     public string $iterator = "";
 
+    //todo change this to an empty array that will accept any key
     public array $fields = [
         "url" => "",
         "title" => "",

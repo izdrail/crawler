@@ -1,8 +1,8 @@
 <?php
 
-namespace Cornatul\CrawlerBoat\Interfaces;
+namespace Cornatul\Crawler\Interfaces;
 
-use Cornatul\CrawlerBoat\DTO\HtmlDTO;
+use Cornatul\Crawler\Dto\HtmlDto;
 
 /**
  * Interface HtmlClientContract
@@ -12,8 +12,8 @@ interface CrawlerInterface
     /**
      * Provides a way to extract data
      * @method extract
-     * @param HtmlDTO $dto
+     * @param HtmlDto $dto
      * @return array
      */
-    public function extract(HtmlDTO $dto): array;
+    public function extract(HtmlDto $dto): array;
 }

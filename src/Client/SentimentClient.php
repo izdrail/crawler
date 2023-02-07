@@ -1,14 +1,13 @@
 <?php
 
-namespace Cornatul\CrawlerBoat\Client;
+namespace Cornatul\Crawler\Client;
 
+use Cornatul\Crawler\Dto\SentimentDto;
+use Cornatul\Crawler\Helpers\CrawlerConfig;
+use Cornatul\Crawler\Interfaces\SentimentInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use JsonException;
-use Symfony\Component\Console\Output\OutputInterface;
-use Cornatul\CrawlerBoat\DTO\SentimentDTO;
-use Cornatul\CrawlerBoat\Facades\CrawlerConfig;
-use Cornatul\CrawlerBoat\Interfaces\SentimentInterface;
 
 
 /**
@@ -33,7 +32,7 @@ class SentimentClient implements SentimentInterface
      * @throws GuzzleException
      * @throws JsonException
      */
-    public function getSentiment(string $urlToExtract): SentimentDTO
+    public function getSentiment(string $urlToExtract): SentimentDto
     {
         //
         $response = $this->client->post(CrawlerConfig::getSentimentEndpoint(), [
@@ -46,7 +45,7 @@ class SentimentClient implements SentimentInterface
 
         $this->output->writeln(json_encode($articleSentiment['sentiment'], JSON_THROW_ON_ERROR));
 
-        return SentimentDTO::from($articleSentiment["data"]);
+        return SentimentDto::from($articleSentiment["data"]);
 
     }
 }
