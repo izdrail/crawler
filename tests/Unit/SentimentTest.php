@@ -1,20 +1,20 @@
 <?php
 
-namespace UnixDevil\CrawlerBoat\Tests\Unit;
+namespace Cornatul\CrawlerBoat\Tests\Unit;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use JsonException;
 use Mockery;
 
-use UnixDevil\Crawler\Contracts\SentimentContract;
-use UnixDevil\CrawlerBoat\Client\SentimentClient;
-use UnixDevil\CrawlerBoat\DTO\SentimentDTO;
-use UnixDevil\CrawlerBoat\Interfaces\CrawlerConfigInterface;
-use UnixDevil\NewsBoat\Client\NewsBoat;
-use UnixDevil\NewsBoat\Interfaces\AllNewsInterface;
-use UnixDevil\NewsBoat\Interfaces\NewsConfigInterface;
-class SentimentTest extends \UnixDevil\CrawlerBoat\Tests\TestCase
+use Cornatul\Crawler\Contracts\SentimentContract;
+use Cornatul\CrawlerBoat\Client\SentimentClient;
+use Cornatul\CrawlerBoat\DTO\SentimentDTO;
+use Cornatul\CrawlerBoat\Interfaces\CrawlerConfigInterface;
+use Cornatul\NewsBoat\Client\NewsBoat;
+use Cornatul\NewsBoat\Interfaces\AllNewsInterface;
+use Cornatul\NewsBoat\Interfaces\NewsConfigInterface;
+class SentimentTest extends \Cornatul\CrawlerBoat\Tests\TestCase
 {
 
     /**
