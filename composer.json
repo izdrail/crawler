@@ -1,5 +1,5 @@
 {
-    "name": "cornatul/crawlerboat",
+    "name": "cornatul/crawler",
     "description": "A set of tools to make parsing websites easier",
     "type": "library",
     "license": "MIT",
@@ -13,12 +13,12 @@
     ],
     "autoload": {
         "psr-4": {
-            "Cornatul\\CrawlerBoat\\": "src/"
+            "Cornatul\\Crawler\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Cornatul\\CrawlerBoat\\Tests\\": "tests/"
+            "Cornatul\\Crawler\\Tests\\": "tests/"
         }
     },
     "require": {
@@ -37,16 +37,10 @@
         "phpunit/phpunit": "^9.5"
     },
     "minimum-stability": "dev",
-    "prefer-stable": true,
-    "config": {
-        "sort-packages": true,
-        "preferred-install": "dist",
-        "optimize-autoloader": true
-    },
     "extra": {
         "laravel": {
             "providers": [
-                "Cornatul\\CrawlerBoat\\Providers\\CrawlerBoatServiceProvider"
+                "Cornatul\\Crawler\\CrawlerServiceProvider"
             ]
         }
     }

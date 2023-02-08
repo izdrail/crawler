@@ -13,10 +13,13 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 
 
-class CrawlMainProvider extends ServiceProvider
+class CrawlerServiceProvider extends ServiceProvider
 {
     final public function boot(): void
     {
+        //todo: add config
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'crawler');
+        $this->loadRoutesFrom(__DIR__.'/../routes/crawler.php');
     }
 
     final public function register(): void

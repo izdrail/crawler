@@ -17,4 +17,9 @@ class CrawlerController extends Controller
     {
         return view('crawler::index');
     }
+
+    final public function create(): Application|Factory|View
+    {
+        return view('crawler::create');
+    }
 }
