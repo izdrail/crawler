@@ -11,7 +11,7 @@ use Cornatul\Crawler\Interfaces\SentimentInterface;
 use Cornatul\Crawler\Client\SentimentClient;
 use Cornatul\Crawler\Dto\SentimentDto;
 
-class SentimentTest extends \Cornatul\CrawlerBoat\Tests\TestCase
+class SentimentTest extends \Cornatul\Crawler\Tests\TestCase
 {
 
     /**

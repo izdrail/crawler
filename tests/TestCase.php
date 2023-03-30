@@ -1,9 +1,9 @@
 <?php
 
-namespace Cornatul\CrawlerBoat\Tests;
+namespace Cornatul\Crawler\Tests;
 
 
-use Cornatul\Crawler\CrawlerProvider;
+use Cornatul\Crawler\CrawlerServiceProvider;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -15,9 +15,9 @@ class TestCase extends \Orchestra\Testbench\TestCase
 
     final protected function getPackageProviders($app):array
     {
-        $app->register(CrawlerProvider::class);
+        $app->register(CrawlerServiceProvider::class);
         return [
-            CrawlerProvider::class
+            CrawlerServiceProvider::class
         ];
     }
 

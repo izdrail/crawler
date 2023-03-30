@@ -1,2 +1,0 @@
-add crawler provider and add the following code to the provider:
-add sentiment provider and add the following code to the provider:

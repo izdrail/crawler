@@ -4,6 +4,8 @@ namespace Cornatul\Crawler;
 
 use Cornatul\Crawler\Client\CrawlerClient;
 use Cornatul\Crawler\Client\SentimentClient;
+use Cornatul\Crawler\Commands\CrawlerCommand;
+use Cornatul\Crawler\Commands\SentimentCommand;
 use Cornatul\Crawler\Interfaces\CrawlerInterface;
 use Cornatul\Crawler\Interfaces\SentimentInterface;
 use GuzzleHttp\Client;
@@ -20,6 +22,8 @@ class CrawlerServiceProvider extends ServiceProvider
         //todo: add config
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'crawler');
         $this->loadRoutesFrom(__DIR__.'/../routes/crawler.php');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+
     }
 
     final public function register(): void
@@ -27,6 +31,11 @@ class CrawlerServiceProvider extends ServiceProvider
         $this->app->bind(ClientInterface::class, Client::class);
         $this->app->bind(ConsoleOutputInterface::class, ConsoleOutput::class);
         $this->app->bind(CrawlerInterface::class, CrawlerClient::class);
+        $this->app->bind(SentimentInterface::class, SentimentClient::class);
+        $this->commands([
+            CrawlerCommand::class,
+        ]);
+
     }
 
 }

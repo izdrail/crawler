@@ -3,6 +3,7 @@
 declare(strict_types=1);
 namespace Cornatul\Crawler\Commands;
 
+use Cornatul\Crawler\Interfaces\CrawlerInterface;
 use GuzzleHttp\ClientInterface;
 use Illuminate\Console\Command;
 use Cornatul\Crawler\Dto\HtmlDto;
@@ -31,7 +32,7 @@ class CrawlerCommand extends Command
      * @param ClientInterface $client
      * @return void
      */
-    final public function handle(ClientInterface $client, HtmlClientContract $htmlClientContract): void
+    final public function handle(ClientInterface $client, CrawlerInterface $htmlClientContract): void
     {
         $this->output->success('Welcome to the package crawler command!');
 

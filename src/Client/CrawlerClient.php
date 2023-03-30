@@ -83,21 +83,25 @@ class CrawlerClient implements CrawlerInterface
      * @param HtmlDto $dto
      * @param string $body
      * @param string $category
-     * @return array
+     * @return Collection
      * @throws GuzzleException
      * @todo replace the return with a collection from laravel
      */
     private function processBody(HtmlDto $dto, string $body, string $category): Collection
     {
-        $results = [];
+        $results = collect();
         $crawler = new Crawler($body);
         $crawler->filter($dto->iterator)->each( function (Crawler $node, $i) use ($category, $results, $dto) {
             $dto->fields["category"] = $category;
             if (str_contains($node->attr('href'), $dto->base_url))
             {
-                $results[] = $this->processSingle($node->attr('href'), $dto);
+               $results->push(
+                   $this->processSingle($node->attr('href'), $dto)
+               );
             }
-            $results[] = $this->processSingle($dto->base_url . $node->attr('href'), $dto);
+            $results->push(
+                $this->processSingle($dto->base_url . $node->attr('href'), $dto)
+            );
         });
         return $results;
     }
