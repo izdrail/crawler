@@ -6,9 +6,8 @@ namespace Cornatul\Crawler\Commands;
 use Cornatul\Crawler\Interfaces\CrawlerInterface;
 use GuzzleHttp\ClientInterface;
 use Illuminate\Console\Command;
-use Cornatul\Crawler\Dto\HtmlDTO;
+use Cornatul\Crawler\DTO\CrawlerDTO;
 use Cornatul\Crawler\Interfaces\SentimentInterface;
-
 
 class CrawlerCommand extends Command
 {
@@ -36,28 +35,30 @@ class CrawlerCommand extends Command
     {
         $this->output->success('Welcome to the package crawler command!');
 
-        $links = [
-            'brake-system' => 'https://club.autodoc.co.uk/manuals/brake-system/brake-discs/all',
-        ];
 
         $object = [
-            'base_url' => 'https://club.autodoc.co.uk',
-            "links" => $links,
-            "iterator" => "div.pdf-instruction-item__header > div > a",
+            "base_url" => "https://9gag.com/v1/feed-posts/type/tag/most-commented",
+            "links" => [
+                "https://9gag.com/v1/feed-posts/type/tag/most-commented",
+                "https://9gag.com/v1/feed-posts/type/tag/most-commented?c=10",
+                "https://9gag.com/v1/feed-posts/type/tag/most-commented?c=20",
+                "https://9gag.com/v1/feed-posts/type/tag/most-commented?c=30",
+                "https://9gag.com/v1/feed-posts/type/tag/most-commented?c=40",
+            ],
+            "iterator" => "data.posts",
             "fields"=> [
-                "title" => "h1.section__title-category",
-                "body" => "div.sub-page--instruction",
-                "image" => "div.details-image > div.seo-tool__container > img",
+                "title" => "title",
+                "type" => "type",
+                "image" => "images.image700",
+                "tags" => "tags",
+                "comments" => "commentsCount",
             ],
         ];
 
 
-        $htmlStructure = HtmlDTO::from($object);
+        $htmlStructure = CrawlerDTO::from($object);
 
-        $htmlClientContract->extract($htmlStructure);
+        $results = $htmlClientContract->extract($htmlStructure);
 
     }
-
-
-
 }

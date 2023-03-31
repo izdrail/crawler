@@ -2,7 +2,7 @@
 namespace Corantul\Crawler\Jobs;
 
 use Carbon\Carbon;
-use Cornatul\Crawler\Dto\HtmlDTO;
+use Cornatul\Crawler\Dto\CrawlerDTO;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -26,9 +26,9 @@ class SiteCrawler implements ShouldQueue
 {
     use  Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private HtmlDTO $htmlStructureDTO;
+    private CrawlerDTO $htmlStructureDTO;
 
-    public function __construct(HtmlDTO $htmlStructureDTO)
+    public function __construct(CrawlerDTO $htmlStructureDTO)
     {
         $this->htmlStructureDTO = $htmlStructureDTO;
         info("SiteCrawler::__construct() {$this->htmlStructureDTO->toJson()}");

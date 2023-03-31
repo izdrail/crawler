@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DomCrawler\Crawler;
-use Cornatul\Crawler\Dto\HtmlDTO;
+use Cornatul\Crawler\Dto\CrawlerDTO;
 
 
 class CrawlerClient implements CrawlerInterface
@@ -45,7 +45,7 @@ class CrawlerClient implements CrawlerInterface
      * @throws GuzzleException
      * @throws Exception
      */
-    public function extract(HtmlDTO $dto): Collection
+    public function extract(CrawlerDTO $dto): Collection
     {
         $results = collect();
 
@@ -88,7 +88,7 @@ class CrawlerClient implements CrawlerInterface
      * @throws GuzzleException
      * @todo replace the return with a collection from laravel
      */
-    private function processBody(HtmlDTO $dto, string $body, string $category): Collection
+    private function processBody(CrawlerDTO $dto, string $body, string $category): Collection
     {
         $results = collect();
         $crawler = new Crawler($body);
@@ -117,7 +117,7 @@ class CrawlerClient implements CrawlerInterface
      * @throws Exception
      * @todo replace the return with a collection from laravel
      */
-    private function processSingle(string $url, HtmlDTO $dto): array
+    private function processSingle(string $url, CrawlerDTO $dto): array
     {
         $results = [];
 
