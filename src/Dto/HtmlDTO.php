@@ -4,7 +4,7 @@ namespace Cornatul\Crawler\Dto;
 
 use Spatie\LaravelData\Data;
 
-class HtmlDto extends Data
+class HtmlDTO extends Data
 {
     public string $base_url;
 

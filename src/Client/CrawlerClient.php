@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DomCrawler\Crawler;
-use Cornatul\Crawler\Dto\HtmlDto;
+use Cornatul\Crawler\Dto\HtmlDTO;
 
 
 class CrawlerClient implements CrawlerInterface
@@ -25,7 +25,7 @@ class CrawlerClient implements CrawlerInterface
         "category",
     ];
 
-    private array $headers = [
+    public array $headers = [
         'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
         'Accept' => 'text/html,application/xhtml',
         'Accept-Language' => 'en-US,en;q=0.9',
@@ -45,9 +45,9 @@ class CrawlerClient implements CrawlerInterface
      * @throws GuzzleException
      * @throws Exception
      */
-    public function extract(HtmlDto $dto): array
+    public function extract(HtmlDTO $dto): Collection
     {
-        $results = [];
+        $results = collect();
 
         $links = $dto->links;
 
@@ -61,7 +61,8 @@ class CrawlerClient implements CrawlerInterface
 
             if ($content->getStatusCode() ===200) {
                 $body = $content->getBody()->getContents();
-                $results[] = $this->processBody($dto, $body, $category);
+                $response = $this->processBody($dto, $body, $category);
+                $results->push($response);
             }
             if ($content->getStatusCode() === 403) {
                 throw new \RuntimeException("403 Forbidden");
@@ -87,22 +88,27 @@ class CrawlerClient implements CrawlerInterface
      * @throws GuzzleException
      * @todo replace the return with a collection from laravel
      */
-    private function processBody(HtmlDto $dto, string $body, string $category): Collection
+    private function processBody(HtmlDTO $dto, string $body, string $category): Collection
     {
         $results = collect();
         $crawler = new Crawler($body);
-        $crawler->filter($dto->iterator)->each( function (Crawler $node, $i) use ($category, $results, $dto) {
-            $dto->fields["category"] = $category;
-            if (str_contains($node->attr('href'), $dto->base_url))
-            {
-               $results->push(
-                   $this->processSingle($node->attr('href'), $dto)
-               );
-            }
-            $results->push(
-                $this->processSingle($dto->base_url . $node->attr('href'), $dto)
-            );
-        });
+
+        try {
+            $crawler->filter($dto->iterator)->each( function (Crawler $node, $i) use ($category, $results, $dto) {
+                $dto->fields["category"] = $category;
+                if (str_contains($node->attr('href'), $dto->base_url))
+                {
+                    $results->push(
+                        $this->processSingle($node->attr('href'), $dto)
+                    );
+                }
+                $results->push(
+                    $this->processSingle($dto->base_url . $node->attr('href'), $dto)
+                );
+            });
+        }catch (Exception $e){
+            $this->output->write($e->getMessage());
+        }
         return $results;
     }
 
@@ -111,7 +117,7 @@ class CrawlerClient implements CrawlerInterface
      * @throws Exception
      * @todo replace the return with a collection from laravel
      */
-    private function processSingle(string $url, HtmlDto $dto): array
+    private function processSingle(string $url, HtmlDTO $dto): array
     {
         $results = [];
 

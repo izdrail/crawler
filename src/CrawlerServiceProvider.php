@@ -19,11 +19,9 @@ class CrawlerServiceProvider extends ServiceProvider
 {
     final public function boot(): void
     {
-        //todo: add config
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'crawler');
         $this->loadRoutesFrom(__DIR__.'/../routes/crawler.php');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-
     }
 
     final public function register(): void
@@ -31,7 +29,6 @@ class CrawlerServiceProvider extends ServiceProvider
         $this->app->bind(ClientInterface::class, Client::class);
         $this->app->bind(ConsoleOutputInterface::class, ConsoleOutput::class);
         $this->app->bind(CrawlerInterface::class, CrawlerClient::class);
-        $this->app->bind(SentimentInterface::class, SentimentClient::class);
         $this->commands([
             CrawlerCommand::class,
         ]);

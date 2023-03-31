@@ -6,7 +6,7 @@ namespace Cornatul\Crawler\Commands;
 use Cornatul\Crawler\Interfaces\CrawlerInterface;
 use GuzzleHttp\ClientInterface;
 use Illuminate\Console\Command;
-use Cornatul\Crawler\Dto\HtmlDto;
+use Cornatul\Crawler\Dto\HtmlDTO;
 use Cornatul\Crawler\Interfaces\SentimentInterface;
 
 
@@ -37,27 +37,25 @@ class CrawlerCommand extends Command
         $this->output->success('Welcome to the package crawler command!');
 
         $links = [
-            'it' => 'https://www.cv-library.co.uk/it-jobs?perpage=100',
+            'brake-system' => 'https://club.autodoc.co.uk/manuals/brake-system/brake-discs/all',
         ];
 
-        //todo to change this have a look at how you can preprocess the data that enters in the DTO
         $object = [
-            'base_url' => 'https://www.cv-library.co.uk',
+            'base_url' => 'https://club.autodoc.co.uk',
             "links" => $links,
-            "iterator" => "h2.job__title > a",
+            "iterator" => "div.pdf-instruction-item__header > div > a",
             "fields"=> [
-                "title" => "h1.job__title > span",
-                "body" => "div.job__description",
-                "image" => "img.job__logo",
+                "title" => "h1.section__title-category",
+                "body" => "div.sub-page--instruction",
+                "image" => "div.details-image > div.seo-tool__container > img",
             ],
         ];
 
 
-        $htmlStructure = HtmlDto::from($object);
+        $htmlStructure = HtmlDTO::from($object);
 
-        $data = $htmlClientContract->extract($htmlStructure);
+        $htmlClientContract->extract($htmlStructure);
 
-        $this->output->success($data);
     }
 
 
