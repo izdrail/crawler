@@ -3,6 +3,8 @@ declare(strict_types=1);
 namespace Cornatul\Crawler;
 
 use Cornatul\Crawler\Client\CrawlerClient;
+use Cornatul\Crawler\Client\CustomClient;
+use Cornatul\Crawler\Client\JsonClient;
 use Cornatul\Crawler\Client\SentimentClient;
 use Cornatul\Crawler\Commands\CrawlerCommand;
 use Cornatul\Crawler\Commands\SentimentCommand;
@@ -13,7 +15,6 @@ use GuzzleHttp\ClientInterface;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
-
 
 class CrawlerServiceProvider extends ServiceProvider
 {
@@ -28,11 +29,9 @@ class CrawlerServiceProvider extends ServiceProvider
     {
         $this->app->bind(ClientInterface::class, Client::class);
         $this->app->bind(ConsoleOutputInterface::class, ConsoleOutput::class);
-        $this->app->bind(CrawlerInterface::class, CrawlerClient::class);
+        $this->app->bind(CrawlerInterface::class, JsonClient::class);
         $this->commands([
             CrawlerCommand::class,
         ]);
-
     }
-
 }
