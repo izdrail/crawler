@@ -1,6 +1,6 @@
 {
-    "name": "unixdevil/crawlerboat",
-    "description": "A set of tools to make working with Data Transfer Objects easier in Laravel",
+    "name": "cornatul/crawler",
+    "description": "A set of tools to make parsing websites easier",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -8,17 +8,17 @@
             "role": "Developer",
             "name": "Stefan I",
             "email": "Stefan@unxidevil.com",
-            "homepage": "https://unixdevil.com/"
+            "homepage": "https://cornatul.com/"
         }
     ],
     "autoload": {
         "psr-4": {
-            "UnixDevil\\CrawlerBoat\\": "src/"
+            "Cornatul\\Crawler\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "UnixDevil\\CrawlerBoat\\Tests\\": "tests/"
+            "Cornatul\\Crawler\\Tests\\": "tests/"
         }
     },
     "require": {
@@ -37,16 +37,10 @@
         "phpunit/phpunit": "^9.5"
     },
     "minimum-stability": "dev",
-    "prefer-stable": true,
-    "config": {
-        "sort-packages": true,
-        "preferred-install": "dist",
-        "optimize-autoloader": true
-    },
     "extra": {
         "laravel": {
             "providers": [
-                "UnixDevil\\CrawlerBoat\\Providers\\CrawlerBoatServiceProvider"
+                "Cornatul\\Crawler\\CrawlerServiceProvider"
             ]
         }
     }
