@@ -30,7 +30,7 @@
         "symfony/css-selector": "^6.2",
         "symfony/browser-kit": "^6.2",
         "symfony/dom-crawler": "^6.2",
-        "crwlr/crawler": "dev-main"
+        "crwlr/crawler": "^1.0"
     },
     "require-dev": {
         "mockery/mockery": "^1.5",

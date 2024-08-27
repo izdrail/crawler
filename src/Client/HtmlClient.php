@@ -30,14 +30,12 @@ class HtmlClient extends HttpCrawler implements CrawlerInterface
      */
     public function extract(CrawlerDTO|Data $dto): Collection
     {
-        $results = new Collection();
-
         $this->input($dto->base_url)
             ->addStep(Http::get())                              // Load the listing page
             ->addStep(Html::getLinks($dto->iterator))    // Get the links to the articles
             ->addStep(Http::get())                              // Load the article pages
             ->addStep(
-                Html::first('article')->extract($dto->fields)->addToResult()
+                Html::first('article')->extract($dto->fields)
             );
 
         return collect($this->run());
