@@ -4,7 +4,6 @@ namespace Cornatul\Crawler\Client;
 
 use Crwlr\Crawler\Exceptions\UnknownLoaderKeyException;
 use Crwlr\Crawler\HttpCrawler;
-use Crwlr\Crawler\Steps\Html;
 use Crwlr\Crawler\Steps\Json;
 use Crwlr\Crawler\Steps\Loading\Http;
 use Crwlr\Crawler\UserAgents\BotUserAgent;
@@ -36,7 +35,7 @@ class JsonClient extends HttpCrawler implements CrawlerInterface
         $this->inputs($dto->links)
             ->addStep(Http::get())
             ->addStep(
-                Json::each($dto->iterator, $dto->fields)->addToResult()
+                Json::each($dto->iterator, $dto->fields)
             );
 
         return collect($this->run());
